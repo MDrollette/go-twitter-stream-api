@@ -31,7 +31,23 @@ type Message struct {
 // stream api message
 
 type TweetJSON struct {
-	Text string
+	Text        string
+	Created_at  string
+	Coordinates *struct {
+		Coordinates *[]float64
+		Type        string
+	}
+	Place *struct {
+		Bounding_box *struct {
+			Coordinates *[][][]float64
+			Type        string
+		}
+		Country      string
+		Country_code string
+		Full_name    string
+		Name         string
+		Place_type   string
+	}
 	User struct {
 		Id                      int
 		Screen_name             string
