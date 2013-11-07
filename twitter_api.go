@@ -113,10 +113,11 @@ func TwitterStream(ch chan Message, stop chan bool, credentials *Credentials, pa
 			Error:    err,
 			Response: resp,
 		}
-
+		stop <- true
 		ch <- message
 		return
 	}
+	stop <- false
 
 	body_reader := bufio.NewReader(resp.Body)
 
@@ -151,16 +152,15 @@ func TwitterStream(ch chan Message, stop chan bool, credentials *Credentials, pa
 			Response: resp,
 			Tweet:    tweet,
 		}
-
 		select {
 		case s := <-stop:
 			if s {
+				stop <- true
 				return
 			}
+		case ch <- message:
 		default:
 		}
-
-		ch <- message
 	}
 }
 
